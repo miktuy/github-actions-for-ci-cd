@@ -20,6 +20,7 @@ jobs:
       - name: Execute commands
         run: |
           echo "Install dependencies..."
+          ls -la
           echo "Run tests..."
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
 
