@@ -1,7 +1,7 @@
-from app import app
+from app import application
 
 
-@app.route('/')
-@app.route('/index')
+@application.route('/')
+@application.route('/index')
 def index():
     return 'Hello World!!!'
