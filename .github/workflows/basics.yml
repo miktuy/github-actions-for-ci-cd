@@ -16,11 +16,13 @@ jobs:
 
     steps:
       - name: Print Start Msg
-        run: echo "Starting tests..."
+        run : echo "Starting tests..."
+      - name: Get repo
+        uses: actions/checkout@v1
+        run : ls -la
       - name: Execute commands
-        run: |
+        run : |
           echo "Install dependencies..."
-          ls -la
           echo "Run tests..."
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
 
@@ -32,8 +34,12 @@ jobs:
 
     steps:
       - name: Print Start Msg
-        run: echo "Starting deploy..."
+        run : echo "Starting deploy..."
+      - name: Check AWS tools
+        run : |
+          aws --version
+          zip
       - name: Deploy
-        run: |
+        run : |
           echo "Deploying"
           echo "${{ env.DEPLOY_PACKAGE_NAME }} is deployed"
