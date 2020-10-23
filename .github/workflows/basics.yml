@@ -19,6 +19,7 @@ jobs:
         run : echo "Starting tests..."
       - name: Get repo
         uses: actions/checkout@v1
+      - name: Repo should be available
         run : ls -la
       - name: Execute commands
         run : |
