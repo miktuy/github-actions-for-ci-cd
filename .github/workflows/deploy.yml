@@ -24,9 +24,9 @@ jobs:
         uses: actions/checkout@v1
 
       - name : Check AWS tools
-          run: |
-            aws --version
-            zip --version
+      - run: |
+          aws --version
+          zip --version
 
       - name: Create ZIP deployment package
         runs: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
