@@ -24,8 +24,8 @@ jobs:
       - name: Execute commands
         run : |
           echo "Install dependencies..."
-          pip --version
-          pip install -r requirements.txt
+          python3 virtualenv.py venv && source venv/bin/activate && pip3 --version
+          pip3 install -r requirements.txt
           export FLASK_APP=application.py
           flask run
           echo "Run tests..."
