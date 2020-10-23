@@ -1,5 +1,9 @@
 name: Simple-GitHub-Actions-For-Flask-App
 
+env:
+  APPLICATION_NAME: "SimpleFlask"
+  DEPLOY_PACKAGE_NAME    : "flask-deploy-ver-${{ github.sha }}"
+
 on:
   push:
     branches: [ master ]
@@ -13,6 +17,11 @@ jobs:
     steps:
       - name: Print Start Msg
         run: echo "Starting tests..."
+      - name: Execute commands
+        run: |
+          echo "Install dependencies..."
+          echo "Run tests..."
+          echo "${{ env.APPLICATION_NAME }} is tested!!!"
 
 
   deploy:
@@ -23,3 +32,7 @@ jobs:
     steps:
       - name: Print Start Msg
         run: echo "Starting deploy..."
+      - name: Deploy
+        run: |
+          echo "Deploying"
+          echo "${{ env.DEPLOY_PACKAGE_NAME }} is deployed"
