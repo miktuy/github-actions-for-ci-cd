@@ -17,8 +17,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    
-    need: [testing]
+
+    needs: [testing]
 
     steps:
       - name: Print Start Msg
