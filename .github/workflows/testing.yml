@@ -1,0 +1,34 @@
+name: Testing-Flask-App
+
+env:
+  APPLICATION_NAME          : "SimpleFlask"
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Start Msg
+        run : echo "Starting tests..."
+
+      - name: Get repo
+        uses: actions/checkout@v1
+
+      - name: Repo should be available
+        run : ls -la
+
+      - name: Execute commands
+        run : |
+          echo "Install dependencies..."
+          pip3 --version
+          pip3 install -r requirements.txt
+          export FLASK_APP=application.py
+          python3 -m flask run &
+          sleep 10
+          echo "Run tests..."
+          curl http://127.0.0.1:5000/
+          echo "${{ env.APPLICATION_NAME }} is tested!!!"
