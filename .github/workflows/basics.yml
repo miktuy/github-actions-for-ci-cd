@@ -1,0 +1,22 @@
+name: Simple-GitHub-Actions-For-Flask-App
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Start Msg
+        run: echo "Starting tests..."
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Start Msg
+        run: echo "Starting deploy..."
