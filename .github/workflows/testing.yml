@@ -27,7 +27,7 @@ jobs:
           pip3 --version
           pip3 install -r requirements.txt
           export FLASK_APP=application.py
-          python3 -m flask run &
+          python3 application.py &
           sleep 10
           echo "Run tests..."
           curl http://127.0.0.1:5000/
