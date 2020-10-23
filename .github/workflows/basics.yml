@@ -45,7 +45,7 @@ jobs:
       - name: Check AWS tools
         run : |
           aws --version
-          zip
+          zip --version
       - name: Deploy
         run : |
           echo "Deploying"
