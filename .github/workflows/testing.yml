@@ -1,12 +1,9 @@
-name: Simple-GitHub-Actions-For-Flask-App
+name: Testing-Flask-App
 
 env:
-  APPLICATION_NAME: "SimpleFlask"
-  DEPLOY_PACKAGE_NAME    : "flask-deploy-ver-${{ github.sha }}"
+  APPLICATION_NAME          : "SimpleFlask"
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -17,10 +14,13 @@ jobs:
     steps:
       - name: Print Start Msg
         run : echo "Starting tests..."
+
       - name: Get repo
         uses: actions/checkout@v1
+
       - name: Repo should be available
         run : ls -la
+
       - name: Execute commands
         run : |
           echo "Install dependencies..."
@@ -32,21 +32,3 @@ jobs:
           echo "Run tests..."
           curl http://127.0.0.1:5000/
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
-
-
-  deploy:
-    runs-on: ubuntu-latest
-
-    needs: [testing]
-
-    steps:
-      - name: Print Start Msg
-        run : echo "Starting deploy..."
-      - name: Check AWS tools
-        run : |
-          aws --version
-          zip --version
-      - name: Deploy
-        run : |
-          echo "Deploying"
-          echo "${{ env.DEPLOY_PACKAGE_NAME }} is deployed"

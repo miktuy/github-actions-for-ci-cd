@@ -1,0 +1,60 @@
+name: Simple-GitHub-Actions-For-Flask-App
+
+env:
+  APPLICATION_NAME          : "SimpleFlask"
+  DEPLOY_PACKAGE_NAME       : "flask_app_${{ github.sha }}.zip"
+  EB_PACKAGE_S3_BUCKET_NAME : "miktue-flask-app-pkg"
+  EB_APPLICATION_NAME       : "SimpleFlask"
+  EB_ENVIRONMENT_NAME       : "Simpleflask-env"
+  AWS_REGION_NAME           : "us-east-2"
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build_deploy_pkg:
+    runs-on: ubuntu-latest
+
+    needs: [testing]
+
+    steps:
+      - name: Get repo
+        uses: actions/checkout@v1
+
+      - name : Check AWS tools
+      - run: |
+          aws --version
+          zip --version
+
+      - name: Create ZIP deployment package
+        runs: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id : ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-key-id : ${{ secrets.AWS_SECRET_KEY }}
+          aws-region        : ${{ env.AWS_REGION_NAME }}
+
+      - name: Copy pkg to S3 bucket
+        run : aws s3 cp ${{ DEPLOY_PACKAGE_NAME }}  s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME }}/
+
+      - name: Finish msg
+        run : echo "App packed delivered to AWS `${{ env.EB_PACKAGE_S3_BUCKET_NAME }}`"
+
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: [build_deploy_pkg]
+
+    steps:
+      - name: Print Start Msg
+        run : echo "Starting deploy..."
+
+      - name: Deploy
+        run : |
+          echo "Deploying"
+          echo "${{ env.DEPLOY_PACKAGE_NAME }} is deployed"
