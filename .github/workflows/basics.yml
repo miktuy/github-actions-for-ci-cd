@@ -24,7 +24,12 @@ jobs:
       - name: Execute commands
         run : |
           echo "Install dependencies..."
+          pip --version
+          pip install -r requirements.txt
+          export FLASK_APP=application.py
+          flask run
           echo "Run tests..."
+          curl http://127.0.0.1:5000/
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
 
 
