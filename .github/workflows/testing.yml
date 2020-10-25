@@ -24,7 +24,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/nul
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - << "${{ secrets.GIT_HUB_SIMPLE_PO_RSA_KEY }}"
 
       - name: Execute commands
