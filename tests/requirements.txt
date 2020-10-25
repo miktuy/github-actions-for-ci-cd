@@ -1,1 +1,1 @@
-git@github.com:miktuy/simple-page-objects.git
+git+ssh://git@github.com:miktuy/simple-page-objects.git
