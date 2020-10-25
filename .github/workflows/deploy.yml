@@ -11,6 +11,8 @@ env:
 on:
   push:
     branches: [ master ]
+    path    : 'app/**'
+
 
 jobs:
 
