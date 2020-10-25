@@ -18,10 +18,18 @@ jobs:
       - name: Get repo
         uses: actions/checkout@v1
 
-      - name: Repo should be available
-        run : ls -la
+      - name           : Setup SSH Keys and known_hosts
+        env            :
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/nul
+          ssh-add - << "${{ secrets.GIT_HUB_SIMPLE_PO_RSA_KEY }}"
 
       - name: Execute commands
+        env :
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run : |
           echo "Install dependencies..."
           pip3 --version
@@ -30,5 +38,6 @@ jobs:
           python3 application.py &
           sleep 10
           echo "Run tests..."
-          curl http://127.0.0.1:5000/
+          pip3 install -r ./tests/requirements.txt
+          python3 -m robot -L trace -P . tests/robot_tests/Smoke.robot
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
