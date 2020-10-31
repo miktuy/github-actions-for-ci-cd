@@ -25,11 +25,10 @@ jobs:
           echo "Install dependencies..."
           pip3 --version
           pip3 install -r requirements.txt
-          pip3 install awesomo -i https://miktuy:${{ secrets.GIT_WORD }}@github.com/miktuy/simple-page-objects.git
+          pip3 install https://miktuy:${{ secrets.GIT_WORD }}@github.com/miktuy/simple-page-objects.git
           export FLASK_APP=application.py
           python3 application.py &
           sleep 10
           echo "Run tests..."
-          pip3 install -r ./tests/requirements.txt
           python3 -m robot -L trace -P . tests/robot_tests/Smoke.robot
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
