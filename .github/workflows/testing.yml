@@ -18,17 +18,22 @@ jobs:
       - name: Get repo
         uses: actions/checkout@v1
 
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.GIT_HUB_SIMPLE_PO_RSA_KEY }}
+          name: id_rsa_simple_key
+          known_hosts: github.com
+
       - name: Execute commands
-        env :
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run : |
           echo "Install dependencies..."
           pip3 --version
-          pip3 install git+https://miktuy:${{ secrets.GIT_WORD }}@github.com/miktuy/simple-page-objects.git
           pip3 install -r requirements.txt
           export FLASK_APP=application.py
           python3 application.py &
           sleep 10
+          pip3 install -r tests/requirements.txt
           echo "Run tests..."
           python3 -m robot -L trace -P . tests/robot_tests/Smoke.robot
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
