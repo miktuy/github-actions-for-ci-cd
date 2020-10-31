@@ -18,8 +18,12 @@ jobs:
       - name: Get repo
         uses: actions/checkout@v1
 
-      - name: Repo should be available
-        run : ls -la
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.GIT_HUB_SIMPLE_PO_RSA_KEY }}
+          name: id_rsa_simple_key
+          known_hosts: github.com
 
       - name: Execute commands
         run : |
@@ -29,6 +33,7 @@ jobs:
           export FLASK_APP=application.py
           python3 application.py &
           sleep 10
+          pip3 install -r tests/requirements.txt
           echo "Run tests..."
-          curl http://127.0.0.1:5000/
+          python3 -m robot -L trace -P . tests/robot_tests/Smoke.robot
           echo "${{ env.APPLICATION_NAME }} is tested!!!"
