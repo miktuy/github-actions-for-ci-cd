@@ -18,16 +18,6 @@ jobs:
       - name: Get repo
         uses: actions/checkout@v1
 
-      - name           : Setup SSH Keys and known_hosts
-        env            :
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          SSH_KEY      : ${{ secrets.GIT_HUB_SIMPLE_PO_RSA_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< $SSH_KEY
-
       - name: Execute commands
         env :
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -35,6 +25,7 @@ jobs:
           echo "Install dependencies..."
           pip3 --version
           pip3 install -r requirements.txt
+          pip3 install awesomo -i https://miktuy:${{ secrets.GIT_WORD }}@github.com/miktuy/simple-page-objects.git
           export FLASK_APP=application.py
           python3 application.py &
           sleep 10
