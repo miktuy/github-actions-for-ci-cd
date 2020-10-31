@@ -24,8 +24,8 @@ jobs:
         run : |
           echo "Install dependencies..."
           pip3 --version
-          pip3 install -r requirements.txt
           pip3 install git+https://miktuy:${{ secrets.GIT_WORD }}@github.com/miktuy/simple-page-objects.git
+          pip3 install -r requirements.txt
           export FLASK_APP=application.py
           python3 application.py &
           sleep 10
